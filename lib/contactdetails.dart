@@ -1,4 +1,5 @@
 
+import 'package:contacts/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'sql.dart';
 import 'model.dart';
@@ -41,12 +42,11 @@ class _ContactDetailsState extends State<ContactDetails> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-            CircleAvatar(
-              radius: 100.0,
-              backgroundImage:
-              NetworkImage('$url'),
-              backgroundColor: Colors.transparent,
-            ),
+              CircleAvatar(
+                radius: 100.0,
+                backgroundImage: Image.network(url.text).image,
+                backgroundColor: Colors.transparent,
+              ),
               TextField(
                 controller: name,
                 decoration: const InputDecoration(
@@ -75,9 +75,22 @@ class _ContactDetailsState extends State<ContactDetails> {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF0977CB))),
                   onPressed: () {
-                    setState(() {
+                    String updatedName = name.text;
+                    String updatedNumber = number.text;
+                    String updatedURL = url.text;
 
-                    });
+                    Contacts updatedContact = Contacts(
+                      id: widget.contact.id,
+                      contactName: updatedName,
+                      contactNumber: updatedNumber,
+                      imageURL: updatedURL,
+                    );
+
+                    Sql.instance.updateContacts(updatedContact);
+
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
                   },
                   child: const Text(
                     'SAVE',
@@ -117,7 +130,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                               ),
                               onPressed: () {
                                 Sql.instance.deleteContact(widget.contact.id!);
-                                Navigator.of(context).pushNamed('/home') ;
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> HomeScreen())) ;
                                  setState(() {
                                  });
                               },

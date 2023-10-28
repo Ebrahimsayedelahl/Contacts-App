@@ -128,21 +128,23 @@ class _ScreenState extends State<HomeScreen> {
               itemCount: contactsList.length,
               itemBuilder: (context, index) {
                 Contacts contact = contactsList[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/contact-details') ;
-                  },
-                  child: Container(
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 50.0,
-                          backgroundImage: NetworkImage(contact.imageURL),
-                          backgroundColor: Colors.transparent,
-                        ),
-                        Text(contact.contactName),
-                        Text(contact.contactNumber),
-                      ],
+                return Card(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ContactDetails(contact: contact))) ;
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: NetworkImage(contact.imageURL),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          Text(contact.contactName),
+                          Text(contact.contactNumber),
+                        ],
+                      ),
                     ),
                   ),
                 );
